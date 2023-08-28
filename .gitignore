@@ -1,0 +1,5 @@
+bin
+obj
+.vscode
+VehiclePositions.dat
+.DS_Store
