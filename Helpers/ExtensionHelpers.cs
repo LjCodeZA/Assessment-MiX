@@ -4,17 +4,32 @@ namespace MiXAssessment
 {
     public static class ExtensionHelpers
     {
-        public static string ReadNullTerminatedString(this BinaryReader binaryFileReader)
+        public static long FindLastPaddingPosition(this BinaryReader binaryFileReader, long startPosition)
         {
-            var result = new StringBuilder();
+            binaryFileReader.BaseStream.Position = startPosition;
+            int paddingReachedCount = 4;
+            int paddingCheckCount = 0;
+
             while (true)
             {
                 byte b = binaryFileReader.ReadByte();
                 if (0 == b)
-                    break;
-                result.Append((char)b);
+                {
+                    paddingCheckCount++;
+
+                    if (paddingCheckCount == paddingReachedCount)
+                    {
+                        break;
+                    }
+                }
+                else
+                    paddingCheckCount = 0;
             }
-            return result.ToString();
+
+            var lastPaddingPosition = binaryFileReader.BaseStream.Position;
+            binaryFileReader.BaseStream.Position = startPosition;
+
+            return lastPaddingPosition;
         }
     }
 }

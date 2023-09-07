@@ -166,5 +166,21 @@ namespace MiXAssessment
 
             return new List<Coordinate>();
         }
+
+        public string ReadNullTerminatedString(byte[] buffer, int startIndex)
+        {
+            StringBuilder result = new StringBuilder();
+
+            for (int i = startIndex; i < buffer.Length; i++)
+            {
+                byte b = buffer[i];
+                if (b == 0)
+                    break;
+
+                result.Append((char)b);
+            }
+
+            return result.ToString();
+        }
     }
 }
